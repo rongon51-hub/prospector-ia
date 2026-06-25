@@ -1,1 +1,1027 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Prospector IA — Ciudad Blanca</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a2744;
+    --navy-light: #243258;
+    --gold: #c9a84c;
+    --gold-light: #e2c46e;
+    --gold-pale: #f5edd8;
+    --white: #ffffff;
+    --gray-100: #f8f9fb;
+    --gray-200: #eef0f5;
+    --gray-400: #9aa0b4;
+    --gray-600: #5a6178;
+    --green: #2d7a4f;
+    --green-bg: #eaf4ee;
+    --red: #c0392b;
+    --red-bg: #fdf0ee;
+    --radius: 12px;
+    --shadow: 0 4px 24px rgba(26,39,68,0.10);
+  }
 
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--gray-100);
+    color: var(--navy);
+    min-height: 100vh;
+    padding: 0 0 48px 0;
+  }
+
+  /* HEADER */
+  header {
+    background: var(--navy);
+    padding: 20px 24px 18px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(26,39,68,0.18);
+  }
+  .logo-mark {
+    width: 38px; height: 38px;
+    background: var(--gold);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    color: var(--navy);
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: var(--white);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  header p {
+    font-size: 11px;
+    color: var(--gold-light);
+    margin-top: 2px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* API KEY SETUP */
+  .setup-bar {
+    background: var(--navy-light);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .setup-bar label {
+    font-size: 11px;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+  .setup-bar input {
+    flex: 1;
+    min-width: 160px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 6px;
+    padding: 7px 12px;
+    font-size: 12px;
+    color: var(--white);
+    font-family: 'Inter', monospace;
+    outline: none;
+  }
+  .setup-bar input:focus {
+    border-color: var(--gold);
+  }
+  .setup-bar input::placeholder { color: var(--gray-400); }
+  .setup-bar select {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 12px;
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    cursor: pointer;
+  }
+  .setup-bar select option { background: var(--navy); color: var(--white); }
+  .provider-hint {
+    font-size: 10px;
+    color: var(--gold-light);
+    padding: 4px 24px 6px;
+    background: var(--navy-light);
+  }
+  .provider-hint a { color: var(--gold); text-decoration: none; }
+
+    font-size: 11px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .status-ok { background: var(--green-bg); color: var(--green); }
+  .status-empty { background: rgba(201,168,76,0.15); color: var(--gold-light); }
+
+  /* MAIN */
+  main {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 24px 16px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* CARDS */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .card-header {
+    padding: 16px 20px 12px;
+    border-bottom: 1px solid var(--gray-200);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .step-badge {
+    width: 26px; height: 26px;
+    background: var(--gold-pale);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+  .card-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .card-body { padding: 16px 20px; }
+
+  /* INPUTS */
+  .field { margin-bottom: 14px; }
+  .field:last-child { margin-bottom: 0; }
+  label.field-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-600);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  textarea, input[type="text"] {
+    width: 100%;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 11px 14px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    color: var(--navy);
+    background: var(--gray-100);
+    outline: none;
+    resize: vertical;
+    transition: border-color 0.15s;
+    line-height: 1.5;
+  }
+  textarea:focus, input[type="text"]:focus {
+    border-color: var(--gold);
+    background: var(--white);
+  }
+  textarea::placeholder, input::placeholder { color: var(--gray-400); }
+
+  .char-hint {
+    font-size: 11px;
+    color: var(--gray-400);
+    margin-top: 4px;
+    text-align: right;
+  }
+
+  /* ANALYZE BUTTON */
+  .btn-analyze {
+    width: 100%;
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    padding: 15px;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.15s, transform 0.1s;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-analyze:hover { background: var(--navy-light); }
+  .btn-analyze:active { transform: scale(0.98); }
+  .btn-analyze:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .btn-analyze .gold-line {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  }
+
+  /* LOADING */
+  .spinner {
+    width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: var(--white);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: none;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* RESULT CARD */
+  #result-card { display: none; }
+
+  .score-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px 20px;
+    background: var(--navy);
+    border-radius: var(--radius) var(--radius) 0 0;
+  }
+  .score-circle {
+    width: 60px; height: 60px;
+    border-radius: 50%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    flex-shrink: 0;
+    border: 3px solid var(--gold);
+  }
+  .score-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .score-max {
+    font-size: 10px;
+    color: var(--gold-light);
+    margin-top: 1px;
+  }
+  .score-meta h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .score-badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .badge-hot { background: #c9a84c22; color: var(--gold-light); border: 1px solid var(--gold); }
+  .badge-warm { background: rgba(255,200,100,0.15); color: #f0c060; border: 1px solid #c09030; }
+  .badge-cold { background: rgba(255,255,255,0.08); color: var(--gray-400); border: 1px solid var(--gray-400); }
+
+  .result-section {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .result-section:last-child { border-bottom: none; }
+  .result-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .result-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--navy);
+  }
+
+  /* MESSAGE BOX */
+  .message-box {
+    background: var(--gray-100);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 12px 14px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--navy);
+    position: relative;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 8px; right: 8px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gray-600);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .copy-btn:hover { border-color: var(--gold); color: var(--gold); }
+  .copy-btn.copied { border-color: var(--green); color: var(--green); }
+
+  /* ACTION BUTTONS */
+  .action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 16px 20px;
+  }
+  .btn-save {
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    padding: 13px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    gap: 6px;
+    transition: background 0.15s;
+  }
+  .btn-save:hover { background: var(--navy-light); }
+  .btn-discard {
+    background: var(--white);
+    color: var(--gray-600);
+    border: 1.5px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 13px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    gap: 6px;
+    transition: all 0.15s;
+  }
+  .btn-discard:hover { border-color: var(--red); color: var(--red); }
+
+  /* WEBHOOK CONFIG */
+  .webhook-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .webhook-row input { flex: 1; font-size: 12px; }
+  .btn-test {
+    background: var(--gold-pale);
+    color: var(--gold);
+    border: 1.5px solid var(--gold);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .btn-test:hover { background: var(--gold); color: var(--white); }
+
+  /* HISTORY */
+  #history-section { display: none; }
+  .history-list { display: flex; flex-direction: column; gap: 8px; }
+  .history-item {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .h-score {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--navy);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+  .h-info { flex: 1; min-width: 0; }
+  .h-name { font-size: 13px; font-weight: 600; color: var(--navy); }
+  .h-time { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
+  .h-status {
+    font-size: 11px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-weight: 600;
+  }
+  .h-saved { background: var(--green-bg); color: var(--green); }
+  .h-discarded { background: var(--red-bg); color: var(--red); }
+
+  /* TOAST */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--navy);
+    color: var(--white);
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 500;
+    box-shadow: 0 8px 32px rgba(26,39,68,0.25);
+    border-bottom: 3px solid var(--gold);
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    z-index: 999;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 32px 20px;
+    color: var(--gray-400);
+  }
+  .empty-state .icon { font-size: 32px; margin-bottom: 10px; }
+  .empty-state p { font-size: 13px; }
+
+  /* ERROR */
+  .error-box {
+    background: var(--red-bg);
+    border: 1px solid #f5c6c0;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--red);
+    display: none;
+    margin-top: 12px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-mark">P</div>
+  <div>
+    <h1>Prospector IA</h1>
+    <p>Sistema de calificación — Red de Liderazgo</p>
+  </div>
+</header>
+
+<div class="setup-bar">
+  <label>Proveedor</label>
+  <select id="api-provider" onchange="onProviderChange()">
+    <option value="groq">Groq (gratis)</option>
+    <option value="gemini">Google Gemini (gratis)</option>
+    <option value="mistral">Mistral (gratis)</option>
+    <option value="openai">OpenAI</option>
+  </select>
+  <input type="password" id="groq-key" placeholder="gsk_..." autocomplete="off">
+  <span id="api-status" class="status-empty">Sin configurar</span>
+</div>
+
+
+
+  <!-- PASO 1: DATOS DEL PROSPECTO -->
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge">1</div>
+      <h2>Datos del prospecto</h2>
+    </div>
+    <div class="card-body">
+      <div class="field">
+        <label class="field-label">Usuario de Instagram</label>
+        <input type="text" id="username" placeholder="@nombre_usuario">
+      </div>
+      <div class="field">
+        <label class="field-label">Descripción del perfil (bio)</label>
+        <textarea id="bio" rows="3" placeholder="Pega aquí la biografía del perfil..."></textarea>
+      </div>
+      <div class="field">
+        <label class="field-label">Comentario o publicación relevante</label>
+        <textarea id="comment" rows="3" placeholder="Pega aquí lo que escribió esta persona..."></textarea>
+        <div class="char-hint" id="char-count">0 caracteres</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTÓN ANALIZAR -->
+  <button class="btn-analyze" id="btn-analyze" onclick="analyzeProspect()">
+    <div class="spinner" id="spinner"></div>
+    <span id="btn-text">✦ Analizar prospecto</span>
+    <div class="gold-line"></div>
+  </button>
+
+  <div class="error-box" id="error-box"></div>
+
+  <!-- PASO 2: RESULTADO -->
+  <div class="card" id="result-card">
+    <div class="score-row">
+      <div class="score-circle">
+        <div class="score-num" id="score-num">—</div>
+        <div class="score-max">/10</div>
+      </div>
+      <div class="score-meta">
+        <h3 id="result-username">@usuario</h3>
+        <span class="score-badge" id="score-badge">—</span>
+      </div>
+    </div>
+
+    <div class="result-section">
+      <div class="result-label">¿Por qué califica?</div>
+      <div class="result-text" id="result-why">—</div>
+    </div>
+
+    <div class="result-section">
+      <div class="result-label">Ángulo de conexión</div>
+      <div class="result-text" id="result-angle">—</div>
+    </div>
+
+    <div class="result-section">
+      <div class="result-label">Mensaje sugerido (listo para enviar)</div>
+      <div class="message-box" id="result-message">
+        —
+        <button class="copy-btn" id="copy-btn" onclick="copyMessage()">Copiar</button>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="btn-save" onclick="saveProspect()">
+        ✅ Guardar prospecto
+      </button>
+      <button class="btn-discard" onclick="discardProspect()">
+        ✕ Descartar
+      </button>
+    </div>
+  </div>
+
+  <!-- CONFIGURACIÓN WEBHOOK MAKE -->
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge">⚙</div>
+      <h2>Webhook Make.com</h2>
+    </div>
+    <div class="card-body">
+      <div class="field">
+        <label class="field-label">URL del webhook</label>
+        <div class="webhook-row">
+          <input type="text" id="webhook-url" placeholder="https://hook.make.com/...">
+          <button class="btn-test" onclick="testWebhook()">Probar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORIAL -->
+  <div class="card" id="history-section">
+    <div class="card-header">
+      <div class="step-badge">📋</div>
+      <h2>Prospectos de hoy</h2>
+    </div>
+    <div class="card-body" style="padding: 12px 20px;">
+      <div class="history-list" id="history-list"></div>
+    </div>
+  </div>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ─── STATE ───────────────────────────────────────────────────
+  let currentResult = null;
+  const history = [];
+
+  // ─── PROVIDERS CONFIG ────────────────────────────────────────
+  const PROVIDERS = {
+    groq: {
+      placeholder: 'gsk_...',
+      hint: '🔑 Regístrate gratis en <b>console.groq.com</b> → API Keys → Create API Key',
+      validate: k => k.startsWith('gsk_') && k.length > 20
+    },
+    gemini: {
+      placeholder: 'AIza... (pega tu key completa)',
+      hint: '🔑 Entra a <b>aistudio.google.com</b> con tu cuenta Google → Get API Key → Create API Key in new project',
+      validate: k => k.length > 15
+    },
+    mistral: {
+      placeholder: 'Tu API key de Mistral...',
+      hint: '🔑 Regístrate gratis en <b>console.mistral.ai</b> → API Keys → Create new key',
+      validate: k => k.length > 20
+    },
+    openai: {
+      placeholder: 'sk-...',
+      hint: '🔑 Entra a <b>platform.openai.com</b> → API Keys → Create new secret key (requiere tarjeta)',
+      validate: k => (k.startsWith('sk-') || k.startsWith('sk-proj-')) && k.length > 20
+    }
+  };
+
+  // ─── PROVIDER SWITCH ─────────────────────────────────────────
+  function onProviderChange() {
+    const provider = document.getElementById('api-provider').value;
+    const p = PROVIDERS[provider];
+    const keyInput = document.getElementById('groq-key');
+    keyInput.placeholder = p.placeholder;
+
+    let hint = document.getElementById('provider-hint');
+    if (!hint) {
+      hint = document.createElement('div');
+      hint.id = 'provider-hint';
+      hint.className = 'provider-hint';
+      document.querySelector('.setup-bar').insertAdjacentElement('afterend', hint);
+    }
+    hint.innerHTML = p.hint;
+
+    const saved = localStorage.getItem('apikey_' + provider) || '';
+    keyInput.value = saved;
+    updateKeyStatus(provider, saved);
+  }
+
+  function updateKeyStatus(provider, val) {
+    const statusEl = document.getElementById('api-status');
+    if (PROVIDERS[provider].validate(val.trim())) {
+      statusEl.textContent = 'Configurada ✓';
+      statusEl.className = 'status-ok';
+    } else {
+      statusEl.textContent = 'Sin configurar';
+      statusEl.className = 'status-empty';
+    }
+  }
+
+  // ─── API KEY INPUT ───────────────────────────────────────────
+  document.getElementById('groq-key').addEventListener('input', function() {
+    const provider = document.getElementById('api-provider').value;
+    localStorage.setItem('apikey_' + provider, this.value.trim());
+    updateKeyStatus(provider, this.value);
+  });
+
+  // Init on load
+  onProviderChange();
+
+  // Load saved webhook
+  const savedWebhook = localStorage.getItem('make_webhook');
+  if (savedWebhook) document.getElementById('webhook-url').value = savedWebhook;
+  document.getElementById('webhook-url').addEventListener('input', e => {
+    localStorage.setItem('make_webhook', e.target.value.trim());
+  });
+
+  // Char counter
+  document.getElementById('comment').addEventListener('input', function() {
+    document.getElementById('char-count').textContent = this.value.length + ' caracteres';
+  });
+
+  // ─── PROMPT ──────────────────────────────────────────────────
+  function buildPrompt(username, bio, comment) {
+    return `Eres un experto en prospección para un negocio de red de liderazgo y activos educativos. Tu función es evaluar si una persona de Instagram es un buen prospecto para un modelo de negocio que combina educación en liderazgo con generación de ingresos residuales.
+
+PERFIL A EVALUAR:
+- Usuario: ${username || 'No indicado'}
+- Biografía: ${bio || 'No disponible'}
+- Comentario o publicación: ${comment || 'No disponible'}
+
+CRITERIOS DE CALIFICACIÓN:
+- Profesionales o emprendedores (alta prioridad)
+- Personas que buscan crecimiento personal, liderazgo o ingresos adicionales
+- Personas con mentalidad de desarrollo, aprendizaje o negocios
+- Personas activas en redes, con presencia o audiencia
+
+INSTRUCCIONES:
+Responde ÚNICAMENTE en el siguiente formato JSON exacto, sin texto adicional, sin explicaciones, sin bloques de código markdown:
+
+{
+  "score": <número del 1 al 10>,
+  "label": <"PROSPECTO CALIENTE" si score >= 8, "PROSPECTO TIBIO" si score 5-7, "PROSPECTO FRÍO" si score <= 4>,
+  "why": <2-3 oraciones explicando por qué califica o no, basado en datos concretos del perfil>,
+  "angle": <1-2 oraciones sobre el ángulo específico de conexión para este perfil>,
+  "message": <mensaje de contacto por Instagram DM, tono profesional pero cercano, máximo 4 oraciones, sin emojis excesivos, que mencione algo específico del perfil y abra conversación sobre liderazgo y generación de activos. Firma como ingeniero civil que descubrió este modelo.>
+}`;
+  }
+
+  // ─── API CALLS ───────────────────────────────────────────────
+  async function callGroq(apiKey, prompt) {
+    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        max_tokens: 800,
+        temperature: 0.7,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || `Error ${res.status}`); }
+    const data = await res.json();
+    return data.choices[0].message.content.trim();
+  }
+
+  async function callGemini(apiKey, prompt) {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { maxOutputTokens: 800, temperature: 0.7 }
+      })
+    });
+    if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || `Error ${res.status}`); }
+    const data = await res.json();
+    return data.candidates[0].content.parts[0].text.trim();
+  }
+
+  async function callMistral(apiKey, prompt) {
+    const res = await fetch('https://api.mistral.ai/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+      body: JSON.stringify({
+        model: 'mistral-small-latest',
+        max_tokens: 800,
+        temperature: 0.7,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || `Error ${res.status}`); }
+    const data = await res.json();
+    return data.choices[0].message.content.trim();
+  }
+
+  async function callOpenAI(apiKey, prompt) {
+    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        max_tokens: 800,
+        temperature: 0.7,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || `Error ${res.status}`); }
+    const data = await res.json();
+    return data.choices[0].message.content.trim();
+  }
+
+  // ─── ANALYZE ─────────────────────────────────────────────────
+  async function analyzeProspect() {
+    const provider = document.getElementById('api-provider').value;
+    const apiKey = document.getElementById('groq-key').value.trim();
+    const username = document.getElementById('username').value.trim();
+    const bio = document.getElementById('bio').value.trim();
+    const comment = document.getElementById('comment').value.trim();
+
+    if (!PROVIDERS[provider].validate(apiKey)) {
+      showError('Ingresa una API Key válida para el proveedor seleccionado.');
+      return;
+    }
+    if (!username && !bio && !comment) {
+      showError('Ingresa al menos el usuario o algún texto del perfil.');
+      return;
+    }
+
+    setLoading(true);
+    hideError();
+
+    const prompt = buildPrompt(username, bio, comment);
+
+    try {
+      let raw = '';
+      if (provider === 'groq') raw = await callGroq(apiKey, prompt);
+      else if (provider === 'gemini') raw = await callGemini(apiKey, prompt);
+      else if (provider === 'mistral') raw = await callMistral(apiKey, prompt);
+      else if (provider === 'openai') raw = await callOpenAI(apiKey, prompt);
+
+      const cleaned = raw.replace(/```json|```/g, '').trim();
+      const result = JSON.parse(cleaned);
+
+      currentResult = { username, bio, comment, ...result, timestamp: new Date() };
+      showResult(result, username);
+
+    } catch (err) {
+      if (err.message.includes('JSON')) {
+        showError('La IA respondió en formato inesperado. Intenta de nuevo.');
+      } else if (err.message.includes('401') || err.message.includes('403')) {
+        showError('API Key inválida. Verifica tu clave.');
+      } else if (err.message.includes('429')) {
+        showError('Límite de solicitudes alcanzado. Espera unos segundos e intenta de nuevo.');
+      } else {
+        showError('Error: ' + err.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  // ─── SHOW RESULT ─────────────────────────────────────────────
+  function showResult(result, username) {
+    document.getElementById('score-num').textContent = result.score;
+    document.getElementById('result-username').textContent = username || 'Prospecto';
+    document.getElementById('result-why').textContent = result.why;
+    document.getElementById('result-angle').textContent = result.angle;
+    document.getElementById('result-message').childNodes[0].textContent = result.message;
+
+    // Badge
+    const badge = document.getElementById('score-badge');
+    badge.textContent = result.label;
+    badge.className = 'score-badge';
+    if (result.score >= 8) badge.classList.add('badge-hot');
+    else if (result.score >= 5) badge.classList.add('badge-warm');
+    else badge.classList.add('badge-cold');
+
+    // Score circle color
+    const circle = document.querySelector('.score-circle');
+    if (result.score >= 8) circle.style.borderColor = '#c9a84c';
+    else if (result.score >= 5) circle.style.borderColor = '#c09030';
+    else circle.style.borderColor = '#9aa0b4';
+
+    document.getElementById('result-card').style.display = 'block';
+    document.getElementById('result-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    // Reset copy button
+    const copyBtn = document.getElementById('copy-btn');
+    copyBtn.textContent = 'Copiar';
+    copyBtn.className = 'copy-btn';
+  }
+
+  // ─── COPY MESSAGE ────────────────────────────────────────────
+  function copyMessage() {
+    const msg = document.getElementById('result-message').childNodes[0].textContent;
+    navigator.clipboard.writeText(msg.trim()).then(() => {
+      const btn = document.getElementById('copy-btn');
+      btn.textContent = '✓ Copiado';
+      btn.className = 'copy-btn copied';
+      setTimeout(() => {
+        btn.textContent = 'Copiar';
+        btn.className = 'copy-btn';
+      }, 2000);
+    });
+  }
+
+  // ─── SAVE PROSPECT ───────────────────────────────────────────
+  async function saveProspect() {
+    if (!currentResult) return;
+
+    const webhookUrl = document.getElementById('webhook-url').value.trim();
+
+    // Add to local history
+    addToHistory(currentResult, 'saved');
+
+    // Send to Make webhook if configured
+    if (webhookUrl) {
+      try {
+        await fetch(webhookUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            usuario: currentResult.username,
+            bio: currentResult.bio,
+            comentario: currentResult.comment,
+            puntaje: currentResult.score,
+            etiqueta: currentResult.label,
+            justificacion: currentResult.why,
+            angulo: currentResult.angle,
+            mensaje: currentResult.message,
+            fecha: currentResult.timestamp.toISOString(),
+            fuente: 'prospector-ia',
+            tag: 'prospecto-instagram'
+          })
+        });
+        showToast('✅ Prospecto guardado y enviado a Systeme.io');
+      } catch {
+        showToast('✅ Guardado localmente — verifica el webhook');
+      }
+    } else {
+      showToast('✅ Prospecto guardado en historial');
+    }
+
+    resetForm();
+  }
+
+  // ─── DISCARD PROSPECT ────────────────────────────────────────
+  function discardProspect() {
+    if (!currentResult) return;
+    addToHistory(currentResult, 'discarded');
+    showToast('✕ Prospecto descartado');
+    resetForm();
+  }
+
+  // ─── HISTORY ─────────────────────────────────────────────────
+  function addToHistory(result, status) {
+    history.unshift({ ...result, status });
+    renderHistory();
+  }
+
+  function renderHistory() {
+    const section = document.getElementById('history-section');
+    const list = document.getElementById('history-list');
+    section.style.display = 'block';
+
+    list.innerHTML = history.map(item => `
+      <div class="history-item">
+        <div class="h-score">${item.score}</div>
+        <div class="h-info">
+          <div class="h-name">${item.username || 'Sin usuario'}</div>
+          <div class="h-time">${formatTime(item.timestamp)}</div>
+        </div>
+        <span class="h-status ${item.status === 'saved' ? 'h-saved' : 'h-discarded'}">
+          ${item.status === 'saved' ? 'Guardado' : 'Descartado'}
+        </span>
+      </div>
+    `).join('');
+  }
+
+  function formatTime(date) {
+    return date.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  // ─── TEST WEBHOOK ────────────────────────────────────────────
+  async function testWebhook() {
+    const url = document.getElementById('webhook-url').value.trim();
+    if (!url) { showToast('Ingresa la URL del webhook primero'); return; }
+    try {
+      await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          test: true,
+          mensaje: 'Prueba desde Prospector IA',
+          fecha: new Date().toISOString()
+        })
+      });
+      showToast('✅ Webhook respondió correctamente');
+    } catch {
+      showToast('⚠️ No se pudo conectar al webhook');
+    }
+  }
+
+  // ─── HELPERS ─────────────────────────────────────────────────
+  function setLoading(loading) {
+    const btn = document.getElementById('btn-analyze');
+    const spinner = document.getElementById('spinner');
+    const text = document.getElementById('btn-text');
+    btn.disabled = loading;
+    spinner.style.display = loading ? 'block' : 'none';
+    text.textContent = loading ? 'Analizando...' : '✦ Analizar prospecto';
+  }
+
+  function showError(msg) {
+    const box = document.getElementById('error-box');
+    box.textContent = msg;
+    box.style.display = 'block';
+  }
+
+  function hideError() {
+    document.getElementById('error-box').style.display = 'none';
+  }
+
+  function resetForm() {
+    document.getElementById('result-card').style.display = 'none';
+    document.getElementById('username').value = '';
+    document.getElementById('bio').value = '';
+    document.getElementById('comment').value = '';
+    document.getElementById('char-count').textContent = '0 caracteres';
+    currentResult = null;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function showToast(msg) {
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 3000);
+  }
+</script>
+</body>
+</html>
