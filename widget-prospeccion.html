@@ -906,6 +906,7 @@ Responde ÚNICAMENTE en el siguiente formato JSON exacto, sin texto adicional, s
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             usuario: currentResult.username.replace('@', ''),
+            email: currentResult.username.replace('@', '').replace(/[^a-zA-Z0-9]/g, '') + '@prospectos.net',
             bio: currentResult.bio,
             comentario: currentResult.comment,
             puntaje: currentResult.score,
