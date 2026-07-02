@@ -877,6 +877,16 @@
     </div>
   </div>
 
+  <!-- BANNER PAÍS GENERADOR -->
+  <div id="attr-pais-banner" class="pais-banner" style="display:none;background:var(--white);border-radius:var(--radius);box-shadow:var(--shadow);margin-bottom:0;">
+    <div class="pais-flag" id="attr-pais-flag">🌎</div>
+    <div class="pais-info">
+      <div class="pais-nombre" id="attr-pais-nombre">—</div>
+      <div class="pais-confianza" id="attr-pais-confianza"></div>
+    </div>
+    <span class="pais-badge pais-unknown" id="attr-pais-badge">—</span>
+  </div>
+
   <!-- TIP CONTEXTUAL -->
   <div class="attr-tip" id="attr-tip">
     <strong>💡 Comentario de atracción:</strong> El objetivo no es vender — es que el prospecto visite tu perfil con curiosidad. Específico a su contenido, nunca genérico. La IA lo personalizará con base en su bio y post.
@@ -1424,6 +1434,26 @@ Consejo: [regla de oro del seguimiento]`,
   return base + instrucciones[tipo];
 }
 
+function buildPaisPrompt(bio, post) {
+  return `Analiza el siguiente perfil de Instagram e infiere el país del usuario.
+
+Bio: "${bio || 'No disponible'}"
+Último post: "${post || 'No disponible'}"
+
+Indicios a buscar: ciudades, banderas emoji, gentilicios, moneda local, modismos regionales, hashtags geográficos.
+
+Países donde opera el negocio (12 habilitados):
+Colombia, Argentina, Brasil, México, Chile, Uruguay, Venezuela, Panamá, Costa Rica, El Salvador, Honduras, Guatemala
+
+Responde ÚNICAMENTE en JSON exacto, sin texto adicional, sin markdown:
+{
+  "pais_inferido": <nombre del país o "Desconocido">,
+  "pais_confianza": <"alta" si hay indicios claros, "media" si son parciales, "baja" si es suposición>,
+  "pais_habilitado": <true si está en los 12 países, false si no, null si Desconocido>,
+  "pais_indicios": <frase corta de máximo 10 palabras explicando qué dato usó, o "Sin indicios detectados">
+}`;
+}
+
 async function generarAtraccion() {
   const provider = getProvider();
   const apiKey   = getApiKey();
@@ -1442,14 +1472,67 @@ async function generarAtraccion() {
   setAttrLoading(true);
   hideAttrError();
   document.getElementById('attr-resultado').style.display = 'none';
+  document.getElementById('attr-pais-banner').style.display = 'none';
 
   try {
-    const texto = await callAPI(buildAttrPrompt(attrTipo, nombre, bio, post));
-    currentAttr = { username, nombre, bio, post, tipo: attrTipo, texto, timestamp: new Date(), estado: document.getElementById('attr-estado').value };
+    // Dos llamadas en paralelo: mensajes + detección de país
+    const [texto, paisRaw] = await Promise.all([
+      callAPI(buildAttrPrompt(attrTipo, nombre, bio, post)),
+      callAPI(buildPaisPrompt(bio, post))
+    ]);
+
+    // Parsear resultado de país
+    let paisData = { pais_inferido: 'Desconocido', pais_confianza: 'baja', pais_habilitado: null, pais_indicios: 'Sin indicios detectados' };
+    try {
+      const cleaned = paisRaw.replace(/```json|```/g, '').trim();
+      paisData = JSON.parse(cleaned);
+    } catch(e) { /* mantiene defaults */ }
+
+    currentAttr = {
+      username, nombre, bio, post,
+      tipo: attrTipo, texto,
+      timestamp: new Date(),
+      estado: document.getElementById('attr-estado').value,
+      ...paisData
+    };
+
+    renderAttrPais(paisData);
     renderAttrResultado(texto);
+
   } catch(err) {
     showAttrError('Error al generar: ' + err.message);
   } finally { setAttrLoading(false); }
+}
+
+function renderAttrPais(p) {
+  const banner   = document.getElementById('attr-pais-banner');
+  const flag     = document.getElementById('attr-pais-flag');
+  const nombre   = document.getElementById('attr-pais-nombre');
+  const conf     = document.getElementById('attr-pais-confianza');
+  const badge    = document.getElementById('attr-pais-badge');
+
+  const pais    = p.pais_inferido || 'Desconocido';
+  const emoji   = PAIS_EMOJIS[pais] || '🌎';
+
+  flag.textContent  = emoji;
+  nombre.textContent = pais;
+  conf.textContent   = `Confianza: ${p.pais_confianza || 'baja'} · ${p.pais_indicios || 'Sin indicios'}`;
+
+  if (pais === 'Desconocido' || p.pais_habilitado === null) {
+    badge.textContent = '⚠ País desconocido';
+    badge.className   = 'pais-badge pais-unknown';
+    banner.style.background = '';
+  } else if (p.pais_habilitado === true) {
+    badge.textContent = '✓ País habilitado';
+    badge.className   = 'pais-badge pais-ok';
+    banner.style.background = '#f0faf4';
+  } else {
+    badge.textContent = '✕ País NO habilitado';
+    badge.className   = 'pais-badge pais-block';
+    banner.style.background = '#fdf5f5';
+  }
+
+  banner.style.display = 'flex';
 }
 
 function renderAttrResultado(texto) {
@@ -1502,6 +1585,10 @@ async function guardarAtraccion() {
           tipo_mensaje:    currentAttr.tipo,
           texto_generado:  currentAttr.texto,
           estado:          currentAttr.estado,
+          pais_inferido:   currentAttr.pais_inferido   || 'Desconocido',
+          pais_confianza:  currentAttr.pais_confianza  || 'baja',
+          pais_habilitado: currentAttr.pais_habilitado ?? null,
+          pais_indicios:   currentAttr.pais_indicios   || '',
           fecha:           currentAttr.timestamp.toISOString(),
           fuente:          'generador-atraccion-20m',
           tag:             'protocolo-20m'
@@ -1530,15 +1617,20 @@ function renderAttrHistory() {
   const section = document.getElementById('attr-history-section');
   const list    = document.getElementById('attr-history-list');
   section.style.display = 'block';
-  list.innerHTML = attrHistory.map(item => `
+  list.innerHTML = attrHistory.map(item => {
+    const paisEmoji = PAIS_EMOJIS[item.pais_inferido] || '';
+    const paisStr   = item.pais_inferido && item.pais_inferido !== 'Desconocido' ? ` · ${paisEmoji} ${item.pais_inferido}` : '';
+    const habClass  = item.pais_habilitado === true ? 'h-saved' : item.pais_habilitado === false ? 'h-discarded' : 'h-attraction';
+    return `
     <div class="history-item">
       <div class="h-score attraction">${{comentario:'💬',dm_inicial:'📩',dm_interes:'🎣',seguimiento:'🔁'}[item.tipo]}</div>
       <div class="h-info">
-        <div class="h-name">${item.username ? '@'+item.username.replace('@','') : 'Prospecto'} ${item.nombre ? '· '+item.nombre : ''}</div>
+        <div class="h-name">${item.username ? '@'+item.username.replace('@','') : 'Prospecto'} ${item.nombre ? '· '+item.nombre : ''}${paisStr}</div>
         <div class="h-time">${TIPO_CONFIG[item.tipo].label} · ${formatTime(item.timestamp)}</div>
       </div>
-      <span class="h-status h-attraction">Guardado</span>
-    </div>`).join('');
+      <span class="h-status ${habClass}">Guardado</span>
+    </div>`;
+  }).join('');
 }
 
 async function testWebhookAttr() {
