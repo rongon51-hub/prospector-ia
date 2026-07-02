@@ -73,7 +73,39 @@
     text-transform: uppercase;
   }
 
-  /* API KEY SETUP */
+  /* TAB NAV */
+  .tab-nav {
+    background: var(--navy-light);
+    display: flex;
+    border-bottom: 2px solid rgba(201,168,76,0.2);
+  }
+  .tab-btn {
+    flex: 1;
+    padding: 12px 8px;
+    background: transparent;
+    border: none;
+    color: var(--gray-400);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .tab-btn.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+  .tab-btn:hover:not(.active) { color: var(--gold-light); }
+
+  /* SETUP BAR */
   .setup-bar {
     background: var(--navy-light);
     padding: 10px 24px;
@@ -101,9 +133,7 @@
     font-family: 'Inter', monospace;
     outline: none;
   }
-  .setup-bar input:focus {
-    border-color: var(--gold);
-  }
+  .setup-bar input:focus { border-color: var(--gold); }
   .setup-bar input::placeholder { color: var(--gray-400); }
   .setup-bar select {
     background: rgba(255,255,255,0.08);
@@ -117,14 +147,7 @@
     cursor: pointer;
   }
   .setup-bar select option { background: var(--navy); color: var(--white); }
-  .provider-hint {
-    font-size: 10px;
-    color: var(--gold-light);
-    padding: 4px 24px 6px;
-    background: var(--navy-light);
-  }
-  .provider-hint a { color: var(--gold); text-decoration: none; }
-
+  .api-status {
     font-size: 11px;
     padding: 4px 10px;
     border-radius: 20px;
@@ -132,6 +155,13 @@
   }
   .status-ok { background: var(--green-bg); color: var(--green); }
   .status-empty { background: rgba(201,168,76,0.15); color: var(--gold-light); }
+  .provider-hint {
+    font-size: 10px;
+    color: var(--gold-light);
+    padding: 4px 24px 6px;
+    background: var(--navy-light);
+  }
+  .provider-hint a { color: var(--gold); text-decoration: none; }
 
   /* MAIN */
   main {
@@ -206,7 +236,6 @@
     background: var(--white);
   }
   textarea::placeholder, input::placeholder { color: var(--gray-400); }
-
   .char-hint {
     font-size: 11px;
     color: var(--gray-400);
@@ -236,11 +265,7 @@
   }
   .btn-analyze:hover { background: var(--navy-light); }
   .btn-analyze:active { transform: scale(0.98); }
-  .btn-analyze:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    transform: none;
-  }
+  .btn-analyze:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
   .btn-analyze .gold-line {
     position: absolute;
     bottom: 0; left: 0; right: 0;
@@ -285,11 +310,7 @@
     color: var(--gold);
     line-height: 1;
   }
-  .score-max {
-    font-size: 10px;
-    color: var(--gold-light);
-    margin-top: 1px;
-  }
+  .score-max { font-size: 10px; color: var(--gold-light); margin-top: 1px; }
   .score-meta h3 {
     font-family: 'Playfair Display', serif;
     font-size: 16px;
@@ -322,11 +343,7 @@
     color: var(--gold);
     margin-bottom: 8px;
   }
-  .result-text {
-    font-size: 14px;
-    line-height: 1.6;
-    color: var(--navy);
-  }
+  .result-text { font-size: 14px; line-height: 1.6; color: var(--navy); }
 
   /* MESSAGE BOX */
   .message-box {
@@ -394,11 +411,7 @@
   .btn-discard:hover { border-color: var(--red); color: var(--red); }
 
   /* WEBHOOK CONFIG */
-  .webhook-row {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
+  .webhook-row { display: flex; gap: 8px; align-items: center; }
   .webhook-row input { flex: 1; font-size: 12px; }
   .btn-test {
     background: var(--gold-pale);
@@ -438,6 +451,11 @@
     color: var(--gold);
     flex-shrink: 0;
   }
+  .h-score.attraction {
+    background: var(--gold-pale);
+    color: var(--navy);
+    font-size: 16px;
+  }
   .h-info { flex: 1; min-width: 0; }
   .h-name { font-size: 13px; font-weight: 600; color: var(--navy); }
   .h-time { font-size: 11px; color: var(--gray-400); margin-top: 2px; }
@@ -449,6 +467,41 @@
   }
   .h-saved { background: var(--green-bg); color: var(--green); }
   .h-discarded { background: var(--red-bg); color: var(--red); }
+  .h-attraction { background: var(--gold-pale); color: var(--navy); }
+
+  /* PAÍS INDICATOR */
+  .pais-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--gray-200);
+  }
+  .pais-flag { font-size: 22px; flex-shrink: 0; }
+  .pais-info { flex: 1; }
+  .pais-nombre { font-size: 13px; font-weight: 700; color: var(--navy); }
+  .pais-confianza { font-size: 11px; color: var(--gray-400); margin-top: 1px; }
+  .pais-badge {
+    font-size: 11px; font-weight: 700;
+    padding: 4px 10px; border-radius: 20px;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .pais-ok      { background: var(--green-bg); color: var(--green); border: 1px solid #a8d5b5; }
+  .pais-warn    { background: #fff8e6; color: #b07d00; border: 1px solid #f0c060; }
+  .pais-block   { background: var(--red-bg); color: var(--red); border: 1px solid #f5c6c0; }
+  .pais-unknown { background: var(--gray-200); color: var(--gray-600); border: 1px solid #d0d4e0; }
+
+  /* ERROR */
+  .error-box {
+    background: var(--red-bg);
+    border: 1px solid #f5c6c0;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: var(--red);
+    display: none;
+    margin-top: 12px;
+  }
 
   /* TOAST */
   .toast {
@@ -470,26 +523,141 @@
   }
   .toast.show { transform: translateX(-50%) translateY(0); }
 
-  /* EMPTY STATE */
-  .empty-state {
-    text-align: center;
-    padding: 32px 20px;
-    color: var(--gray-400);
-  }
-  .empty-state .icon { font-size: 32px; margin-bottom: 10px; }
-  .empty-state p { font-size: 13px; }
+  /* ── GENERADOR DE ATRACCIÓN ── */
 
-  /* ERROR */
-  .error-box {
-    background: var(--red-bg);
-    border: 1px solid #f5c6c0;
-    border-radius: 8px;
-    padding: 12px 14px;
-    font-size: 13px;
-    color: var(--red);
-    display: none;
-    margin-top: 12px;
+  /* TIPO SELECTOR */
+  .tipo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
   }
+  .tipo-btn {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1.5px solid var(--gray-200);
+    background: var(--gray-100);
+    color: var(--gray-600);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: left;
+    line-height: 1.4;
+  }
+  .tipo-btn .tipo-icon { font-size: 16px; display: block; margin-bottom: 4px; }
+  .tipo-btn .tipo-sub { font-size: 10px; font-weight: 400; color: var(--gray-400); display: block; margin-top: 2px; }
+  .tipo-btn.selected {
+    border-color: var(--gold);
+    background: var(--gold-pale);
+    color: var(--navy);
+  }
+  .tipo-btn.selected .tipo-sub { color: var(--gold); }
+
+  /* RESULTADO ATRACCIÓN */
+  #attr-resultado { display: none; }
+
+  .attr-bloque {
+    background: var(--gray-100);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 14px 14px 16px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+  .attr-bloque-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .attr-bloque-texto {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--navy);
+    white-space: pre-wrap;
+    padding-right: 56px;
+  }
+  .attr-copy {
+    position: absolute;
+    top: 10px; right: 10px;
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: 6px;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gray-600);
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .attr-copy:hover { border-color: var(--gold); color: var(--gold); }
+  .attr-copy.copied { border-color: var(--green); color: var(--green); }
+
+  .attr-tip {
+    background: #fffbf0;
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--gray-600);
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+  .attr-tip strong { color: var(--gold); }
+
+  .btn-guardar-attr {
+    width: 100%;
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    padding: 13px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    gap: 6px;
+    transition: background 0.15s;
+    margin-top: 4px;
+  }
+  .btn-guardar-attr:hover { background: var(--navy-light); }
+
+  .btn-regenerar {
+    width: 100%;
+    background: var(--white);
+    color: var(--gray-600);
+    border: 1.5px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 11px;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-top: 8px;
+  }
+  .btn-regenerar:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ESTADO PIPELINE */
+  .estado-select {
+    width: 100%;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    color: var(--navy);
+    background: var(--gray-100);
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  .estado-select:focus { border-color: var(--gold); }
 </style>
 </head>
 <body>
@@ -502,21 +670,36 @@
   </div>
 </header>
 
+<!-- TAB NAVIGATION -->
+<div class="tab-nav">
+  <button class="tab-btn active" id="tab-calif" onclick="switchTab('calif')">
+    🔍 Calificador
+  </button>
+  <button class="tab-btn" id="tab-attr" onclick="switchTab('attr')">
+    ⚡ Generador 20M
+  </button>
+</div>
+
+<!-- SETUP BAR (compartido) -->
 <div class="setup-bar">
   <label>Proveedor</label>
   <select id="api-provider" onchange="onProviderChange()">
     <option value="groq">Groq (gratis)</option>
     <option value="gemini">Google Gemini (gratis)</option>
-    <option value="mistral">Mistral (gratis)</option>
+    <option value="mistral" selected>Mistral (gratis)</option>
     <option value="openai">OpenAI</option>
   </select>
-  <input type="password" id="groq-key" placeholder="gsk_..." autocomplete="off">
-  <span id="api-status" class="status-empty">Sin configurar</span>
+  <input type="password" id="groq-key" placeholder="Tu API key..." autocomplete="off">
+  <span id="api-status" class="api-status status-empty">Sin configurar</span>
 </div>
+<div id="provider-hint" class="provider-hint"></div>
 
+<!-- ════════════════════════════════════════════
+     TAB 1: CALIFICADOR (código original)
+════════════════════════════════════════════ -->
+<div id="panel-calif">
+<main>
 
-
-  <!-- PASO 1: DATOS DEL PROSPECTO -->
   <div class="card">
     <div class="card-header">
       <div class="step-badge">1</div>
@@ -539,7 +722,6 @@
     </div>
   </div>
 
-  <!-- BOTÓN ANALIZAR -->
   <button class="btn-analyze" id="btn-analyze" onclick="analyzeProspect()">
     <div class="spinner" id="spinner"></div>
     <span id="btn-text">✦ Analizar prospecto</span>
@@ -548,7 +730,6 @@
 
   <div class="error-box" id="error-box"></div>
 
-  <!-- PASO 2: RESULTADO -->
   <div class="card" id="result-card">
     <div class="score-row">
       <div class="score-circle">
@@ -560,17 +741,24 @@
         <span class="score-badge" id="score-badge">—</span>
       </div>
     </div>
+    <!-- INDICADOR DE PAÍS -->
+    <div class="pais-banner" id="pais-banner">
+      <div class="pais-flag" id="pais-flag">🌎</div>
+      <div class="pais-info">
+        <div class="pais-nombre" id="pais-nombre">Detectando país...</div>
+        <div class="pais-confianza" id="pais-confianza"></div>
+      </div>
+      <span class="pais-badge pais-unknown" id="pais-badge">—</span>
+    </div>
 
     <div class="result-section">
       <div class="result-label">¿Por qué califica?</div>
       <div class="result-text" id="result-why">—</div>
     </div>
-
     <div class="result-section">
       <div class="result-label">Ángulo de conexión</div>
       <div class="result-text" id="result-angle">—</div>
     </div>
-
     <div class="result-section">
       <div class="result-label">Mensaje sugerido (listo para enviar)</div>
       <div class="message-box" id="result-message">
@@ -578,18 +766,12 @@
         <button class="copy-btn" id="copy-btn" onclick="copyMessage()">Copiar</button>
       </div>
     </div>
-
     <div class="action-row">
-      <button class="btn-save" onclick="saveProspect()">
-        ✅ Guardar prospecto
-      </button>
-      <button class="btn-discard" onclick="discardProspect()">
-        ✕ Descartar
-      </button>
+      <button class="btn-save" onclick="saveProspect()">✅ Guardar prospecto</button>
+      <button class="btn-discard" onclick="discardProspect()">✕ Descartar</button>
     </div>
   </div>
 
-  <!-- CONFIGURACIÓN WEBHOOK MAKE -->
   <div class="card">
     <div class="card-header">
       <div class="step-badge">⚙</div>
@@ -606,7 +788,6 @@
     </div>
   </div>
 
-  <!-- HISTORIAL -->
   <div class="card" id="history-section">
     <div class="card-header">
       <div class="step-badge">📋</div>
@@ -618,95 +799,302 @@
   </div>
 
 </main>
+</div>
+
+<!-- ════════════════════════════════════════════
+     TAB 2: GENERADOR DE ATRACCIÓN 20M
+════════════════════════════════════════════ -->
+<div id="panel-attr" style="display:none">
+<main>
+
+  <!-- TIPO DE MENSAJE -->
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge">1</div>
+      <h2>Tipo de mensaje</h2>
+    </div>
+    <div class="card-body">
+      <div class="tipo-grid">
+        <button class="tipo-btn selected" onclick="setTipo(this,'comentario')" data-tipo="comentario">
+          <span class="tipo-icon">💬</span>
+          Comentario en post
+          <span class="tipo-sub">Máx. 12 palabras · atrae visitas</span>
+        </button>
+        <button class="tipo-btn" onclick="setTipo(this,'dm_inicial')" data-tipo="dm_inicial">
+          <span class="tipo-icon">📩</span>
+          DM inicial
+          <span class="tipo-sub">3 líneas · 24-48h después</span>
+        </button>
+        <button class="tipo-btn" onclick="setTipo(this,'dm_interes')" data-tipo="dm_interes">
+          <span class="tipo-icon">🎣</span>
+          DM de interés
+          <span class="tipo-sub">Cuando ya respondieron</span>
+        </button>
+        <button class="tipo-btn" onclick="setTipo(this,'seguimiento')" data-tipo="seguimiento">
+          <span class="tipo-icon">🔁</span>
+          Seguimiento
+          <span class="tipo-sub">No respondió en 3-5 días</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DATOS DEL PROSPECTO -->
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge">2</div>
+      <h2>Datos del prospecto</h2>
+    </div>
+    <div class="card-body">
+      <div class="field">
+        <label class="field-label">Usuario de Instagram</label>
+        <input type="text" id="attr-username" placeholder="@nombre_usuario">
+      </div>
+      <div class="field">
+        <label class="field-label">Nombre (opcional)</label>
+        <input type="text" id="attr-nombre" placeholder="ej. Carlos, María...">
+      </div>
+      <div class="field">
+        <label class="field-label">Biografía del perfil</label>
+        <textarea id="attr-bio" rows="3" placeholder="Pega aquí la bio del perfil..."></textarea>
+      </div>
+      <div class="field">
+        <label class="field-label">Pie de foto del último post</label>
+        <textarea id="attr-post" rows="3" placeholder="Pega aquí el caption de su publicación más reciente..."></textarea>
+        <div class="char-hint" id="attr-char-count">0 caracteres</div>
+      </div>
+      <div class="field">
+        <label class="field-label">Estado en pipeline</label>
+        <select class="estado-select" id="attr-estado">
+          <option value="IDENTIFICADO">IDENTIFICADO</option>
+          <option value="COMENTADO">COMENTADO</option>
+          <option value="DM_ENVIADO">DM_ENVIADO</option>
+          <option value="RESPONDIÓ">RESPONDIÓ</option>
+          <option value="EN_CONVERSACIÓN">EN_CONVERSACIÓN</option>
+          <option value="PRESENTACIÓN">PRESENTACIÓN</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIP CONTEXTUAL -->
+  <div class="attr-tip" id="attr-tip">
+    <strong>💡 Comentario de atracción:</strong> El objetivo no es vender — es que el prospecto visite tu perfil con curiosidad. Específico a su contenido, nunca genérico. La IA lo personalizará con base en su bio y post.
+  </div>
+
+  <!-- BOTÓN GENERAR -->
+  <button class="btn-analyze" id="btn-attr" onclick="generarAtraccion()">
+    <div class="spinner" id="attr-spinner"></div>
+    <span id="attr-btn-text">⚡ Generar mensaje de atracción</span>
+    <div class="gold-line"></div>
+  </button>
+
+  <div class="error-box" id="attr-error-box"></div>
+
+  <!-- RESULTADOS -->
+  <div id="attr-resultado">
+    <div class="card">
+      <div class="card-header">
+        <div class="step-badge">✨</div>
+        <h2>Mensajes generados</h2>
+      </div>
+      <div class="card-body">
+        <div id="attr-bloques"></div>
+        <button class="btn-guardar-attr" onclick="guardarAtraccion()">
+          ✅ Registrar en Sheets vía Make.com
+        </button>
+        <button class="btn-regenerar" onclick="generarAtraccion()">
+          ↺ Generar variantes nuevas
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- WEBHOOK (compartido, solo lectura) -->
+  <div class="card">
+    <div class="card-header">
+      <div class="step-badge">⚙</div>
+      <h2>Webhook Make.com</h2>
+    </div>
+    <div class="card-body">
+      <div class="field">
+        <label class="field-label">URL del webhook (compartida con Calificador)</label>
+        <div class="webhook-row">
+          <input type="text" id="webhook-url-attr" placeholder="https://hook.make.com/..." readonly style="cursor:default;opacity:.7">
+          <button class="btn-test" onclick="testWebhookAttr()">Probar</button>
+        </div>
+      </div>
+      <p style="font-size:11px;color:var(--gray-400);margin-top:8px;">
+        Configura la URL en la pestaña Calificador. Los registros de atracción se envían al mismo webhook con campo <code style="background:var(--gray-200);padding:1px 5px;border-radius:4px">tipo: "atraccion_20m"</code> para distinguirlos en Sheets.
+      </p>
+    </div>
+  </div>
+
+  <!-- HISTORIAL ATRACCIÓN -->
+  <div class="card" id="attr-history-section" style="display:none">
+    <div class="card-header">
+      <div class="step-badge">📋</div>
+      <h2>Mensajes generados hoy</h2>
+    </div>
+    <div class="card-body" style="padding: 12px 20px;">
+      <div class="history-list" id="attr-history-list"></div>
+    </div>
+  </div>
+
+</main>
+</div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  // ─── STATE ───────────────────────────────────────────────────
-  let currentResult = null;
-  const history = [];
+// ══════════════════════════════════════════════════════════════
+// SHARED STATE & CONFIG
+// ══════════════════════════════════════════════════════════════
 
-  // ─── PROVIDERS CONFIG ────────────────────────────────────────
-  const PROVIDERS = {
-    groq: {
-      placeholder: 'gsk_...',
-      hint: '🔑 Regístrate gratis en <b>console.groq.com</b> → API Keys → Create API Key',
-      validate: k => k.startsWith('gsk_') && k.length > 20
-    },
-    gemini: {
-      placeholder: 'AIza... (pega tu key completa)',
-      hint: '🔑 Entra a <b>aistudio.google.com</b> con tu cuenta Google → Get API Key → Create API Key in new project',
-      validate: k => k.length > 15
-    },
-    mistral: {
-      placeholder: 'Tu API key de Mistral...',
-      hint: '🔑 Regístrate gratis en <b>console.mistral.ai</b> → API Keys → Create new key',
-      validate: k => k.length > 20
-    },
-    openai: {
-      placeholder: 'sk-...',
-      hint: '🔑 Entra a <b>platform.openai.com</b> → API Keys → Create new secret key (requiere tarjeta)',
-      validate: k => (k.startsWith('sk-') || k.startsWith('sk-proj-')) && k.length > 20
-    }
-  };
+let currentResult   = null;
+let currentAttr     = null;
+let attrTipo        = 'comentario';
+const historyItems  = [];
+const attrHistory   = [];
 
-  // ─── PROVIDER SWITCH ─────────────────────────────────────────
-  function onProviderChange() {
-    const provider = document.getElementById('api-provider').value;
-    const p = PROVIDERS[provider];
-    const keyInput = document.getElementById('groq-key');
-    keyInput.placeholder = p.placeholder;
+const PROVIDERS = {
+  groq:    { placeholder: 'gsk_...', hint: '🔑 Regístrate gratis en <b>console.groq.com</b> → API Keys → Create API Key', validate: k => k.startsWith('gsk_') && k.length > 20 },
+  gemini:  { placeholder: 'AIza...', hint: '🔑 Entra a <b>aistudio.google.com</b> → Get API Key → Create API Key', validate: k => k.length > 15 },
+  mistral: { placeholder: 'Tu API key de Mistral...', hint: '🔑 Regístrate gratis en <b>console.mistral.ai</b> → API Keys → Create new key', validate: k => k.length > 20 },
+  openai:  { placeholder: 'sk-...', hint: '🔑 Entra a <b>platform.openai.com</b> → API Keys → Create new secret key', validate: k => (k.startsWith('sk-') || k.startsWith('sk-proj-')) && k.length > 20 }
+};
 
-    let hint = document.getElementById('provider-hint');
-    if (!hint) {
-      hint = document.createElement('div');
-      hint.id = 'provider-hint';
-      hint.className = 'provider-hint';
-      document.querySelector('.setup-bar').insertAdjacentElement('afterend', hint);
-    }
-    hint.innerHTML = p.hint;
-
-    const saved = localStorage.getItem('apikey_' + provider) || '';
-    keyInput.value = saved;
-    updateKeyStatus(provider, saved);
+// ── TABS ──────────────────────────────────────────────────────
+function switchTab(tab) {
+  document.getElementById('panel-calif').style.display = tab === 'calif' ? 'block' : 'none';
+  document.getElementById('panel-attr').style.display  = tab === 'attr'  ? 'block' : 'none';
+  document.getElementById('tab-calif').classList.toggle('active', tab === 'calif');
+  document.getElementById('tab-attr').classList.toggle('active',  tab === 'attr');
+  // Sync webhook URL to attr panel
+  if (tab === 'attr') {
+    document.getElementById('webhook-url-attr').value = document.getElementById('webhook-url').value;
   }
+}
 
-  function updateKeyStatus(provider, val) {
-    const statusEl = document.getElementById('api-status');
-    if (PROVIDERS[provider].validate(val.trim())) {
-      statusEl.textContent = 'Configurada ✓';
-      statusEl.className = 'status-ok';
-    } else {
-      statusEl.textContent = 'Sin configurar';
-      statusEl.className = 'status-empty';
-    }
+// ── PROVIDER SWITCH ───────────────────────────────────────────
+function onProviderChange() {
+  const provider = document.getElementById('api-provider').value;
+  const p = PROVIDERS[provider];
+  document.getElementById('groq-key').placeholder = p.placeholder;
+  document.getElementById('provider-hint').innerHTML = p.hint;
+  const saved = localStorage.getItem('apikey_' + provider) || '';
+  document.getElementById('groq-key').value = saved;
+  updateKeyStatus(provider, saved);
+}
+
+function updateKeyStatus(provider, val) {
+  const el = document.getElementById('api-status');
+  if (PROVIDERS[provider].validate(val.trim())) {
+    el.textContent = 'Configurada ✓'; el.className = 'api-status status-ok';
+  } else {
+    el.textContent = 'Sin configurar'; el.className = 'api-status status-empty';
   }
+}
 
-  // ─── API KEY INPUT ───────────────────────────────────────────
-  document.getElementById('groq-key').addEventListener('input', function() {
-    const provider = document.getElementById('api-provider').value;
-    localStorage.setItem('apikey_' + provider, this.value.trim());
-    updateKeyStatus(provider, this.value);
+document.getElementById('groq-key').addEventListener('input', function() {
+  const provider = document.getElementById('api-provider').value;
+  localStorage.setItem('apikey_' + provider, this.value.trim());
+  updateKeyStatus(provider, this.value);
+});
+
+// Init
+onProviderChange();
+
+const savedWebhook = localStorage.getItem('make_webhook') || '';
+if (savedWebhook) {
+  document.getElementById('webhook-url').value = savedWebhook;
+  document.getElementById('webhook-url-attr').value = savedWebhook;
+}
+document.getElementById('webhook-url').addEventListener('input', e => {
+  const v = e.target.value.trim();
+  localStorage.setItem('make_webhook', v);
+  document.getElementById('webhook-url-attr').value = v;
+});
+
+document.getElementById('comment').addEventListener('input', function() {
+  document.getElementById('char-count').textContent = this.value.length + ' caracteres';
+});
+document.getElementById('attr-post').addEventListener('input', function() {
+  document.getElementById('attr-char-count').textContent = this.value.length + ' caracteres';
+});
+
+// ══════════════════════════════════════════════════════════════
+// API CALLS (shared)
+// ══════════════════════════════════════════════════════════════
+
+function getApiKey() { return document.getElementById('groq-key').value.trim(); }
+function getProvider() { return document.getElementById('api-provider').value; }
+
+async function callAPI(prompt) {
+  const provider = getProvider();
+  const apiKey   = getApiKey();
+  if (provider === 'groq')    return callGroq(apiKey, prompt);
+  if (provider === 'gemini')  return callGemini(apiKey, prompt);
+  if (provider === 'mistral') return callMistral(apiKey, prompt);
+  if (provider === 'openai')  return callOpenAI(apiKey, prompt);
+}
+
+async function callGroq(k, prompt) {
+  const r = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+    method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${k}`},
+    body: JSON.stringify({ model:'llama-3.3-70b-versatile', max_tokens:900, temperature:0.8, messages:[{role:'user',content:prompt}] })
   });
+  if (!r.ok) { const e=await r.json(); throw new Error(e.error?.message||`Error ${r.status}`); }
+  return (await r.json()).choices[0].message.content.trim();
+}
 
-  // Init on load
-  onProviderChange();
-
-  // Load saved webhook
-  const savedWebhook = localStorage.getItem('make_webhook');
-  if (savedWebhook) document.getElementById('webhook-url').value = savedWebhook;
-  document.getElementById('webhook-url').addEventListener('input', e => {
-    localStorage.setItem('make_webhook', e.target.value.trim());
+async function callGemini(k, prompt) {
+  const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${k}`, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ contents:[{parts:[{text:prompt}]}], generationConfig:{maxOutputTokens:900,temperature:0.8} })
   });
+  if (!r.ok) { const e=await r.json(); throw new Error(e.error?.message||`Error ${r.status}`); }
+  return (await r.json()).candidates[0].content.parts[0].text.trim();
+}
 
-  // Char counter
-  document.getElementById('comment').addEventListener('input', function() {
-    document.getElementById('char-count').textContent = this.value.length + ' caracteres';
+async function callMistral(k, prompt) {
+  const r = await fetch('https://api.mistral.ai/v1/chat/completions', {
+    method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${k}`},
+    body: JSON.stringify({ model:'mistral-small-latest', max_tokens:900, temperature:0.8, messages:[{role:'user',content:prompt}] })
   });
+  if (!r.ok) { const e=await r.json(); throw new Error(e.error?.message||`Error ${r.status}`); }
+  return (await r.json()).choices[0].message.content.trim();
+}
 
-  // ─── PROMPT ──────────────────────────────────────────────────
-  function buildPrompt(username, bio, comment) {
-    return `Eres un experto en prospección para un negocio de red de liderazgo y activos educativos. Tu función es evaluar si una persona de Instagram es un buen prospecto para un modelo de negocio que combina educación en liderazgo con generación de ingresos residuales.
+async function callOpenAI(k, prompt) {
+  const r = await fetch('https://api.openai.com/v1/chat/completions', {
+    method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${k}`},
+    body: JSON.stringify({ model:'gpt-4o-mini', max_tokens:900, temperature:0.8, messages:[{role:'user',content:prompt}] })
+  });
+  if (!r.ok) { const e=await r.json(); throw new Error(e.error?.message||`Error ${r.status}`); }
+  return (await r.json()).choices[0].message.content.trim();
+}
+
+// ══════════════════════════════════════════════════════════════
+// TAB 1: CALIFICADOR (código original sin cambios)
+// ══════════════════════════════════════════════════════════════
+
+// Países habilitados Amway LATAM
+const PAISES_HABILITADOS = [
+  'Colombia','Argentina','Brasil','Brazil','México','Mexico',
+  'Chile','Uruguay','Venezuela','Panamá','Panama',
+  'Costa Rica','El Salvador','Honduras','Guatemala'
+];
+
+const PAIS_EMOJIS = {
+  'Colombia':'🇨🇴','Argentina':'🇦🇷','Brasil':'🇧🇷','Brazil':'🇧🇷',
+  'México':'🇲🇽','Mexico':'🇲🇽','Chile':'🇨🇱','Uruguay':'🇺🇾',
+  'Venezuela':'🇻🇪','Panamá':'🇵🇦','Panama':'🇵🇦',
+  'Costa Rica':'🇨🇷','El Salvador':'🇸🇻','Honduras':'🇭🇳','Guatemala':'🇬🇹'
+};
+
+function buildPrompt(username, bio, comment) {
+  return `Eres un experto en prospección para un negocio de red de liderazgo y activos educativos. Tu función es evaluar si una persona de Instagram es un buen prospecto para un modelo de negocio que combina educación en liderazgo con generación de ingresos residuales.
 
 PERFIL A EVALUAR:
 - Usuario: ${username || 'No indicado'}
@@ -719,6 +1107,19 @@ CRITERIOS DE CALIFICACIÓN:
 - Personas con mentalidad de desarrollo, aprendizaje o negocios
 - Personas activas en redes, con presencia o audiencia
 
+DETECCIÓN DE PAÍS (MUY IMPORTANTE):
+Analiza TODOS los indicios disponibles para inferir el país del prospecto:
+- Ciudades mencionadas en bio o posts (ej: "Bogotá" → Colombia, "CDMX" → México)
+- Banderas emoji en bio (🇨🇴🇲🇽🇦🇷 etc.)
+- Gentilicios o referencias geográficas ("desde Medellín", "chileno")
+- Monedas o contexto económico local (COP, MXN, ARS, etc.)
+- Modismos o expresiones regionales características
+- Hashtags locales (#ColombiaEmprende, #EmprendedorMexicano, etc.)
+- Nombre de usuario con referencias geográficas
+
+Países donde opera el negocio (Amway Latinoamérica — 12 afiliados):
+Colombia, Argentina, Brasil, México, Chile, Uruguay, Venezuela, Panamá, Costa Rica, El Salvador, Honduras, Guatemala
+
 INSTRUCCIONES:
 Responde ÚNICAMENTE en el siguiente formato JSON exacto, sin texto adicional, sin explicaciones, sin bloques de código markdown:
 
@@ -727,302 +1128,454 @@ Responde ÚNICAMENTE en el siguiente formato JSON exacto, sin texto adicional, s
   "label": <"PROSPECTO CALIENTE" si score >= 8, "PROSPECTO TIBIO" si score 5-7, "PROSPECTO FRÍO" si score <= 4>,
   "why": <2-3 oraciones explicando por qué califica o no, basado en datos concretos del perfil>,
   "angle": <1-2 oraciones sobre el ángulo específico de conexión para este perfil>,
-  "message": <mensaje de contacto por Instagram DM, tono profesional pero cercano, máximo 4 oraciones, sin emojis excesivos, que mencione algo específico del perfil y abra conversación sobre liderazgo y generación de activos. Firma como ingeniero civil que descubrió este modelo.>
+  "message": <mensaje de contacto por Instagram DM, tono profesional pero cercano, máximo 4 oraciones, sin emojis excesivos, que mencione algo específico del perfil y abra conversación sobre liderazgo y generación de activos. Firma como ingeniero civil que descubrió este modelo.>,
+  "pais_inferido": <nombre del país detectado, o "Desconocido" si no hay indicios suficientes>,
+  "pais_confianza": <"alta" si hay indicios claros y directos (ciudad conocida, bandera, gentilicio explícito), "media" si hay indicios parciales (modismos, hashtags locales), "baja" si es solo suposición>,
+  "pais_habilitado": <true si el país está en la lista de 12 países habilitados, false si no está, null si es Desconocido>,
+  "pais_indicios": <frase corta de máximo 10 palabras explicando QUÉ dato usó para inferir el país, o "Sin indicios detectados">
 }`;
+}
+
+async function analyzeProspect() {
+  const provider = getProvider();
+  const apiKey   = getApiKey();
+  const username = document.getElementById('username').value.trim();
+  const bio      = document.getElementById('bio').value.trim();
+  const comment  = document.getElementById('comment').value.trim();
+
+  if (!PROVIDERS[provider].validate(apiKey)) { showError('Ingresa una API Key válida.'); return; }
+  if (!username && !bio && !comment) { showError('Ingresa al menos el usuario o algún texto del perfil.'); return; }
+
+  setLoading(true); hideError();
+  try {
+    const raw     = await callAPI(buildPrompt(username, bio, comment));
+    const cleaned = raw.replace(/```json|```/g, '').trim();
+    const result  = JSON.parse(cleaned);
+    currentResult = { username, bio, comment, ...result, timestamp: new Date() };
+    showResult(result, username);
+  } catch(err) {
+    if (err.message.includes('JSON'))      showError('La IA respondió en formato inesperado. Intenta de nuevo.');
+    else if (err.message.includes('401') || err.message.includes('403')) showError('API Key inválida. Verifica tu clave.');
+    else if (err.message.includes('429')) showError('Límite de solicitudes alcanzado. Espera unos segundos.');
+    else showError('Error: ' + err.message);
+  } finally { setLoading(false); }
+}
+
+function showResult(result, username) {
+  document.getElementById('score-num').textContent = result.score;
+  document.getElementById('result-username').textContent = username || 'Prospecto';
+  document.getElementById('result-why').textContent   = result.why;
+  document.getElementById('result-angle').textContent = result.angle;
+  document.getElementById('result-message').childNodes[0].textContent = result.message;
+  const badge = document.getElementById('score-badge');
+  badge.textContent = result.label;
+  badge.className = 'score-badge';
+  if (result.score >= 8) badge.classList.add('badge-hot');
+  else if (result.score >= 5) badge.classList.add('badge-warm');
+  else badge.classList.add('badge-cold');
+  const circle = document.querySelector('.score-circle');
+  circle.style.borderColor = result.score >= 8 ? '#c9a84c' : result.score >= 5 ? '#c09030' : '#9aa0b4';
+
+  // ── INDICADOR DE PAÍS ──
+  const pais     = result.pais_inferido || 'Desconocido';
+  const conf     = result.pais_confianza || 'baja';
+  const hab      = result.pais_habilitado;
+  const indicios = result.pais_indicios || 'Sin indicios detectados';
+  const emoji    = PAIS_EMOJIS[pais] || '🌎';
+
+  document.getElementById('pais-flag').textContent    = emoji;
+  document.getElementById('pais-nombre').textContent  = pais;
+  document.getElementById('pais-confianza').textContent = `Confianza: ${conf} · ${indicios}`;
+
+  const paisBadge = document.getElementById('pais-badge');
+  const paisBanner = document.getElementById('pais-banner');
+  if (pais === 'Desconocido') {
+    paisBadge.textContent = '⚠ País desconocido';
+    paisBadge.className   = 'pais-badge pais-unknown';
+    paisBanner.style.background = '';
+  } else if (hab === true) {
+    paisBadge.textContent = '✓ País habilitado';
+    paisBadge.className   = 'pais-badge pais-ok';
+    paisBanner.style.background = '#f0faf4';
+  } else if (hab === false) {
+    paisBadge.textContent = '✕ País NO habilitado';
+    paisBadge.className   = 'pais-badge pais-block';
+    paisBanner.style.background = '#fdf5f5';
+  } else {
+    paisBadge.textContent = '? Sin datos';
+    paisBadge.className   = 'pais-badge pais-warn';
+    paisBanner.style.background = '';
   }
 
-  // ─── API CALLS ───────────────────────────────────────────────
-  async function callGroq(apiKey, prompt) {
-    const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-      body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
-        max_tokens: 800,
-        temperature: 0.7,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-    if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || `Error ${res.status}`); }
-    const data = await res.json();
-    return data.choices[0].message.content.trim();
-  }
+  document.getElementById('result-card').style.display = 'block';
+  document.getElementById('result-card').scrollIntoView({ behavior:'smooth', block:'nearest' });
+  const copyBtn = document.getElementById('copy-btn');
+  copyBtn.textContent = 'Copiar'; copyBtn.className = 'copy-btn';
+}
 
-  async function callGemini(apiKey, prompt) {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=${apiKey}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { maxOutputTokens: 800, temperature: 0.7 }
-      })
-    });
-    if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || `Error ${res.status}`); }
-    const data = await res.json();
-    return data.candidates[0].content.parts[0].text.trim();
-  }
+function copyMessage() {
+  const msg = document.getElementById('result-message').childNodes[0].textContent;
+  navigator.clipboard.writeText(msg.trim()).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = '✓ Copiado'; btn.className = 'copy-btn copied';
+    setTimeout(() => { btn.textContent = 'Copiar'; btn.className = 'copy-btn'; }, 2000);
+  });
+}
 
-  async function callMistral(apiKey, prompt) {
-    const res = await fetch('https://api.mistral.ai/v1/chat/completions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-      body: JSON.stringify({
-        model: 'mistral-small-latest',
-        max_tokens: 800,
-        temperature: 0.7,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-    if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || `Error ${res.status}`); }
-    const data = await res.json();
-    return data.choices[0].message.content.trim();
-  }
-
-  async function callOpenAI(apiKey, prompt) {
-    const res = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        max_tokens: 800,
-        temperature: 0.7,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-    if (!res.ok) { const e = await res.json(); throw new Error(e.error?.message || `Error ${res.status}`); }
-    const data = await res.json();
-    return data.choices[0].message.content.trim();
-  }
-
-  // ─── ANALYZE ─────────────────────────────────────────────────
-  async function analyzeProspect() {
-    const provider = document.getElementById('api-provider').value;
-    const apiKey = document.getElementById('groq-key').value.trim();
-    const username = document.getElementById('username').value.trim();
-    const bio = document.getElementById('bio').value.trim();
-    const comment = document.getElementById('comment').value.trim();
-
-    if (!PROVIDERS[provider].validate(apiKey)) {
-      showError('Ingresa una API Key válida para el proveedor seleccionado.');
-      return;
-    }
-    if (!username && !bio && !comment) {
-      showError('Ingresa al menos el usuario o algún texto del perfil.');
-      return;
-    }
-
-    setLoading(true);
-    hideError();
-
-    const prompt = buildPrompt(username, bio, comment);
-
+async function saveProspect() {
+  if (!currentResult) return;
+  const webhookUrl = document.getElementById('webhook-url').value.trim();
+  addToHistory(currentResult, 'saved');
+  if (webhookUrl) {
     try {
-      let raw = '';
-      if (provider === 'groq') raw = await callGroq(apiKey, prompt);
-      else if (provider === 'gemini') raw = await callGemini(apiKey, prompt);
-      else if (provider === 'mistral') raw = await callMistral(apiKey, prompt);
-      else if (provider === 'openai') raw = await callOpenAI(apiKey, prompt);
+      await fetch(webhookUrl, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          tipo: 'calificacion',
+          usuario: currentResult.username.replace('@',''),
+          email: currentResult.username.replace('@','').replace(/[^a-zA-Z0-9]/g,'') + '@prospectos.net',
+          bio: currentResult.bio,
+          comentario: currentResult.comment,
+          puntaje: currentResult.score,
+          etiqueta: currentResult.label,
+          justificacion: currentResult.why,
+          angulo: currentResult.angle,
+          mensaje: currentResult.message,
+          estado: 'IDENTIFICADO',
+          pais_inferido:   currentResult.pais_inferido   || 'Desconocido',
+          pais_confianza:  currentResult.pais_confianza  || 'baja',
+          pais_habilitado: currentResult.pais_habilitado ?? null,
+          pais_indicios:   currentResult.pais_indicios   || '',
+          fecha: currentResult.timestamp.toISOString(),
+          fuente: 'prospector-ia',
+          tag: 'prospecto-instagram'
+        })
+      });
+      showToast('✅ Prospecto guardado y enviado a Sheets');
+    } catch { showToast('✅ Guardado localmente — verifica el webhook'); }
+  } else { showToast('✅ Prospecto guardado en historial'); }
+  resetForm();
+}
 
-      const cleaned = raw.replace(/```json|```/g, '').trim();
-      const result = JSON.parse(cleaned);
+function discardProspect() {
+  if (!currentResult) return;
+  addToHistory(currentResult, 'discarded');
+  showToast('✕ Prospecto descartado');
+  resetForm();
+}
 
-      currentResult = { username, bio, comment, ...result, timestamp: new Date() };
-      showResult(result, username);
+function addToHistory(result, status) {
+  historyItems.unshift({ ...result, status });
+  renderHistory();
+}
 
-    } catch (err) {
-      if (err.message.includes('JSON')) {
-        showError('La IA respondió en formato inesperado. Intenta de nuevo.');
-      } else if (err.message.includes('401') || err.message.includes('403')) {
-        showError('API Key inválida. Verifica tu clave.');
-      } else if (err.message.includes('429')) {
-        showError('Límite de solicitudes alcanzado. Espera unos segundos e intenta de nuevo.');
-      } else {
-        showError('Error: ' + err.message);
-      }
-    } finally {
-      setLoading(false);
-    }
-  }
-
-  // ─── SHOW RESULT ─────────────────────────────────────────────
-  function showResult(result, username) {
-    document.getElementById('score-num').textContent = result.score;
-    document.getElementById('result-username').textContent = username || 'Prospecto';
-    document.getElementById('result-why').textContent = result.why;
-    document.getElementById('result-angle').textContent = result.angle;
-    document.getElementById('result-message').childNodes[0].textContent = result.message;
-
-    // Badge
-    const badge = document.getElementById('score-badge');
-    badge.textContent = result.label;
-    badge.className = 'score-badge';
-    if (result.score >= 8) badge.classList.add('badge-hot');
-    else if (result.score >= 5) badge.classList.add('badge-warm');
-    else badge.classList.add('badge-cold');
-
-    // Score circle color
-    const circle = document.querySelector('.score-circle');
-    if (result.score >= 8) circle.style.borderColor = '#c9a84c';
-    else if (result.score >= 5) circle.style.borderColor = '#c09030';
-    else circle.style.borderColor = '#9aa0b4';
-
-    document.getElementById('result-card').style.display = 'block';
-    document.getElementById('result-card').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-    // Reset copy button
-    const copyBtn = document.getElementById('copy-btn');
-    copyBtn.textContent = 'Copiar';
-    copyBtn.className = 'copy-btn';
-  }
-
-  // ─── COPY MESSAGE ────────────────────────────────────────────
-  function copyMessage() {
-    const msg = document.getElementById('result-message').childNodes[0].textContent;
-    navigator.clipboard.writeText(msg.trim()).then(() => {
-      const btn = document.getElementById('copy-btn');
-      btn.textContent = '✓ Copiado';
-      btn.className = 'copy-btn copied';
-      setTimeout(() => {
-        btn.textContent = 'Copiar';
-        btn.className = 'copy-btn';
-      }, 2000);
-    });
-  }
-
-  // ─── SAVE PROSPECT ───────────────────────────────────────────
-  async function saveProspect() {
-    if (!currentResult) return;
-
-    const webhookUrl = document.getElementById('webhook-url').value.trim();
-
-    // Add to local history
-    addToHistory(currentResult, 'saved');
-
-    // Send to Make webhook if configured
-    if (webhookUrl) {
-      try {
-        await fetch(webhookUrl, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            usuario: currentResult.username.replace('@', ''),
-            email: currentResult.username.replace('@', '').replace(/[^a-zA-Z0-9]/g, '') + '@prospectos.net',
-            bio: currentResult.bio,
-            comentario: currentResult.comment,
-            puntaje: currentResult.score,
-            etiqueta: currentResult.label,
-            justificacion: currentResult.why,
-            angulo: currentResult.angle,
-            mensaje: currentResult.message,
-            fecha: currentResult.timestamp.toISOString(),
-            fuente: 'prospector-ia',
-            tag: 'prospecto-instagram'
-          })
-        });
-        showToast('✅ Prospecto guardado y enviado a Systeme.io');
-      } catch {
-        showToast('✅ Guardado localmente — verifica el webhook');
-      }
-    } else {
-      showToast('✅ Prospecto guardado en historial');
-    }
-
-    resetForm();
-  }
-
-  // ─── DISCARD PROSPECT ────────────────────────────────────────
-  function discardProspect() {
-    if (!currentResult) return;
-    addToHistory(currentResult, 'discarded');
-    showToast('✕ Prospecto descartado');
-    resetForm();
-  }
-
-  // ─── HISTORY ─────────────────────────────────────────────────
-  function addToHistory(result, status) {
-    history.unshift({ ...result, status });
-    renderHistory();
-  }
-
-  function renderHistory() {
-    const section = document.getElementById('history-section');
-    const list = document.getElementById('history-list');
-    section.style.display = 'block';
-
-    list.innerHTML = history.map(item => `
-      <div class="history-item">
-        <div class="h-score">${item.score}</div>
-        <div class="h-info">
-          <div class="h-name">${item.username || 'Sin usuario'}</div>
-          <div class="h-time">${formatTime(item.timestamp)}</div>
-        </div>
-        <span class="h-status ${item.status === 'saved' ? 'h-saved' : 'h-discarded'}">
-          ${item.status === 'saved' ? 'Guardado' : 'Descartado'}
-        </span>
+function renderHistory() {
+  const section = document.getElementById('history-section');
+  const list    = document.getElementById('history-list');
+  section.style.display = 'block';
+  list.innerHTML = historyItems.map(item => {
+    const paisEmoji = PAIS_EMOJIS[item.pais_inferido] || '🌎';
+    const paisStr   = item.pais_inferido && item.pais_inferido !== 'Desconocido' ? ` · ${paisEmoji} ${item.pais_inferido}` : '';
+    const habClass  = item.pais_habilitado === true ? 'h-saved' : item.pais_habilitado === false ? 'h-discarded' : 'h-attraction';
+    return `
+    <div class="history-item">
+      <div class="h-score">${item.score}</div>
+      <div class="h-info">
+        <div class="h-name">${item.username || 'Sin usuario'}${paisStr}</div>
+        <div class="h-time">${formatTime(item.timestamp)}</div>
       </div>
-    `).join('');
+      <span class="h-status ${item.status==='saved'?'h-saved':'h-discarded'}">
+        ${item.status==='saved'?'Guardado':'Descartado'}
+      </span>
+    </div>`;
+  }).join('');
+}
+
+async function testWebhook() {
+  const url = document.getElementById('webhook-url').value.trim();
+  if (!url) { showToast('Ingresa la URL del webhook primero'); return; }
+  try {
+    await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ test:true, mensaje:'Prueba desde Prospector IA', fecha:new Date().toISOString() })
+    });
+    showToast('✅ Webhook respondió correctamente');
+  } catch { showToast('⚠️ No se pudo conectar al webhook'); }
+}
+
+function setLoading(on) {
+  document.getElementById('btn-analyze').disabled = on;
+  document.getElementById('spinner').style.display = on ? 'block' : 'none';
+  document.getElementById('btn-text').textContent  = on ? 'Analizando...' : '✦ Analizar prospecto';
+}
+
+function showError(msg) { const b=document.getElementById('error-box'); b.textContent=msg; b.style.display='block'; }
+function hideError()    { document.getElementById('error-box').style.display='none'; }
+
+function resetForm() {
+  document.getElementById('result-card').style.display = 'none';
+  ['username','bio','comment'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('char-count').textContent = '0 caracteres';
+  currentResult = null;
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+// ══════════════════════════════════════════════════════════════
+// TAB 2: GENERADOR DE ATRACCIÓN 20M
+// ══════════════════════════════════════════════════════════════
+
+const TIPO_CONFIG = {
+  comentario:  { label:'Comentario', tip:'<strong>💡 Comentario de atracción:</strong> Máx. 12 palabras, específico al post, que genere curiosidad y haga visitar tu perfil. Cero spam.' },
+  dm_inicial:  { label:'DM inicial',  tip:'<strong>💡 DM inicial:</strong> 24-48h después de comentar. Referencia el tema de su post. Termina preguntando sobre ellos, nunca sobre el negocio.' },
+  dm_interes:  { label:'DM interés',  tip:'<strong>💡 DM de interés:</strong> Ya respondieron. Abre la puerta sin revelar el negocio. El objetivo: que pregunten "¿de qué se trata?".' },
+  seguimiento: { label:'Seguimiento', tip:'<strong>💡 Seguimiento:</strong> Máximo 1 intento. Suave, sin presión. Si no responde, pasa al siguiente.' },
+};
+
+function setTipo(btn, tipo) {
+  document.querySelectorAll('.tipo-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  attrTipo = tipo;
+  document.getElementById('attr-tip').innerHTML = TIPO_CONFIG[tipo].tip;
+  document.getElementById('attr-resultado').style.display = 'none';
+}
+
+function buildAttrPrompt(tipo, nombre, bio, post) {
+  const n = nombre ? `Se llama ${nombre}.` : '';
+  const base = `Eres un experto en prospección de negocios en Instagram con el método de atracción del Protocolo 20M.
+Tu única misión: generar mensajes que despierten curiosidad genuina y hagan que el prospecto quiera visitar el perfil del emisor o iniciar una conversación espontáneamente.
+
+FILOSOFÍA DEL MÉTODO:
+- NO vender. NO mencionar negocios, oportunidades, dinero ni MLM en ningún punto.
+- NO ser genérico ("qué post tan increíble 🔥🔥").
+- SÍ ser específico a lo que la persona publicó o tiene en su bio.
+- SÍ sonar como una persona real, cálida, inteligente.
+- El éxito = el prospecto escribe primero preguntando "¿de qué se trata?".
+
+PERFIL DEL PROSPECTO:
+${n}
+Bio: "${bio || 'No disponible'}"
+Último post: "${post || 'No disponible'}"
+
+`;
+
+  const instrucciones = {
+    comentario: `TAREA: Genera 3 comentarios de Instagram diferentes para publicar en su post.
+REGLAS ESTRICTAS:
+- Máximo 12 palabras cada uno
+- Específico a algo concreto del post o la bio — nunca genérico
+- Cero emojis de fuego, cohetes o aplausos masivos. Máximo 1 emoji por comentario
+- Tono: colega genuinamente interesado, no fan efusivo
+- NO incluyas explicaciones adicionales
+
+FORMATO EXACTO (solo esto, sin introducciones):
+1. [comentario]
+2. [comentario]
+3. [comentario]
+Consejo: [una frase corta sobre cuándo y cómo usarlos]`,
+
+    dm_inicial: `TAREA: Genera 2 DMs de primer contacto para enviar 24-48h después de haber comentado en su post.
+REGLAS:
+- Máximo 3 líneas por DM
+- Referencia el tema de su post o algo de su bio
+- Termina con UNA pregunta abierta sobre ellos — nunca sobre el negocio
+- Tono: colega curioso, no vendedor
+
+FORMATO EXACTO:
+DM A:
+[mensaje]
+
+DM B:
+[mensaje]
+
+Consejo: [cuándo usar A vs B]`,
+
+    dm_interes: `TAREA: Genera 2 DMs para cuando el prospecto ya respondió y mostró interés.
+REGLAS:
+- El objetivo es que pregunten "¿de qué se trata?" — no cerrar aún
+- Menciona que tienes algo que podría interesarle SIN detallar qué es
+- Termina con pregunta para mantener el diálogo
+- Máximo 4 líneas. Tono: natural, seguro, sin presión
+
+FORMATO EXACTO:
+DM A:
+[mensaje]
+
+DM B:
+[mensaje]
+
+Consejo: [diferencia entre A y B]`,
+
+    seguimiento: `TAREA: Genera 2 mensajes de seguimiento para alguien que no respondió en 3-5 días.
+REGLAS:
+- Cero presión, cero "solo quería saber si viste mi mensaje"
+- Referencia algo nuevo de su perfil como si siguieras su contenido
+- Máximo 2 líneas por mensaje
+- Si no responde a este, NO hay más contacto
+
+FORMATO EXACTO:
+Seguimiento A:
+[mensaje]
+
+Seguimiento B:
+[mensaje]
+
+Consejo: [regla de oro del seguimiento]`,
+  };
+
+  return base + instrucciones[tipo];
+}
+
+async function generarAtraccion() {
+  const provider = getProvider();
+  const apiKey   = getApiKey();
+  const username = document.getElementById('attr-username').value.trim();
+  const nombre   = document.getElementById('attr-nombre').value.trim();
+  const bio      = document.getElementById('attr-bio').value.trim();
+  const post     = document.getElementById('attr-post').value.trim();
+
+  if (!PROVIDERS[provider].validate(apiKey)) {
+    showAttrError('Ingresa una API Key válida en la barra superior.'); return;
+  }
+  if (!bio && !post) {
+    showAttrError('Pega al menos la bio o el último post del prospecto.'); return;
   }
 
-  function formatTime(date) {
-    return date.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
-  }
+  setAttrLoading(true);
+  hideAttrError();
+  document.getElementById('attr-resultado').style.display = 'none';
 
-  // ─── TEST WEBHOOK ────────────────────────────────────────────
-  async function testWebhook() {
-    const url = document.getElementById('webhook-url').value.trim();
-    if (!url) { showToast('Ingresa la URL del webhook primero'); return; }
+  try {
+    const texto = await callAPI(buildAttrPrompt(attrTipo, nombre, bio, post));
+    currentAttr = { username, nombre, bio, post, tipo: attrTipo, texto, timestamp: new Date(), estado: document.getElementById('attr-estado').value };
+    renderAttrResultado(texto);
+  } catch(err) {
+    showAttrError('Error al generar: ' + err.message);
+  } finally { setAttrLoading(false); }
+}
+
+function renderAttrResultado(texto) {
+  const container = document.getElementById('attr-bloques');
+
+  // Parsear bloques separados por doble salto de línea
+  const bloques = texto.split(/\n\n+/).map(b => b.trim()).filter(b => b.length > 4);
+
+  container.innerHTML = bloques.map((bloque, i) => {
+    const esConsejo = bloque.toLowerCase().startsWith('consejo:');
+    const label = esConsejo ? '💡 Consejo de uso' : (TIPO_CONFIG[attrTipo].label + ' ' + (i+1));
+    return `
+      <div class="attr-bloque" style="${esConsejo ? 'border-left-color:#9aa0b4;background:#f8f9fb' : ''}">
+        <div class="attr-bloque-label">${label}</div>
+        <div class="attr-bloque-texto">${escHtml(bloque)}</div>
+        ${!esConsejo ? `<button class="attr-copy" onclick="copiarAttr(this,${JSON.stringify(bloque)})">Copiar</button>` : ''}
+      </div>`;
+  }).join('');
+
+  document.getElementById('attr-resultado').style.display = 'block';
+  document.getElementById('attr-resultado').scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+function copiarAttr(btn, texto) {
+  navigator.clipboard.writeText(texto).then(() => {
+    btn.textContent = '✓ Copiado'; btn.className = 'attr-copy copied';
+    setTimeout(() => { btn.textContent = 'Copiar'; btn.className = 'attr-copy'; }, 2000);
+  });
+}
+
+async function guardarAtraccion() {
+  if (!currentAttr) return;
+  const webhookUrl = document.getElementById('webhook-url').value.trim();
+
+  // Registrar en historial local
+  attrHistory.unshift({ ...currentAttr });
+  renderAttrHistory();
+
+  if (webhookUrl) {
     try {
-      await fetch(url, {
+      await fetch(webhookUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          test: true,
-          mensaje: 'Prueba desde Prospector IA',
-          fecha: new Date().toISOString()
+          tipo:            'atraccion_20m',
+          usuario:         currentAttr.username.replace('@','') || 'sin_usuario',
+          nombre:          currentAttr.nombre || '',
+          bio:             currentAttr.bio,
+          ultimo_post:     currentAttr.post,
+          tipo_mensaje:    currentAttr.tipo,
+          texto_generado:  currentAttr.texto,
+          estado:          currentAttr.estado,
+          fecha:           currentAttr.timestamp.toISOString(),
+          fuente:          'generador-atraccion-20m',
+          tag:             'protocolo-20m'
         })
       });
-      showToast('✅ Webhook respondió correctamente');
-    } catch {
-      showToast('⚠️ No se pudo conectar al webhook');
-    }
+      showToast('✅ Registrado en Sheets vía Make.com');
+    } catch { showToast('✅ Guardado local — verifica el webhook'); }
+  } else {
+    showToast('⚠️ Configura el webhook en la pestaña Calificador');
   }
 
-  // ─── HELPERS ─────────────────────────────────────────────────
-  function setLoading(loading) {
-    const btn = document.getElementById('btn-analyze');
-    const spinner = document.getElementById('spinner');
-    const text = document.getElementById('btn-text');
-    btn.disabled = loading;
-    spinner.style.display = loading ? 'block' : 'none';
-    text.textContent = loading ? 'Analizando...' : '✦ Analizar prospecto';
-  }
-
-  function showError(msg) {
-    const box = document.getElementById('error-box');
-    box.textContent = msg;
-    box.style.display = 'block';
-  }
-
-  function hideError() {
-    document.getElementById('error-box').style.display = 'none';
-  }
-
-  function resetForm() {
-    document.getElementById('result-card').style.display = 'none';
-    document.getElementById('username').value = '';
-    document.getElementById('bio').value = '';
-    document.getElementById('comment').value = '';
-    document.getElementById('char-count').textContent = '0 caracteres';
-    currentResult = null;
+  // Limpiar para próximo prospecto
+  setTimeout(() => {
+    document.getElementById('attr-resultado').style.display = 'none';
+    document.getElementById('attr-username').value = '';
+    document.getElementById('attr-nombre').value   = '';
+    document.getElementById('attr-bio').value      = '';
+    document.getElementById('attr-post').value     = '';
+    document.getElementById('attr-char-count').textContent = '0 caracteres';
+    currentAttr = null;
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+  }, 1500);
+}
 
-  function showToast(msg) {
-    const toast = document.getElementById('toast');
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3000);
-  }
+function renderAttrHistory() {
+  const section = document.getElementById('attr-history-section');
+  const list    = document.getElementById('attr-history-list');
+  section.style.display = 'block';
+  list.innerHTML = attrHistory.map(item => `
+    <div class="history-item">
+      <div class="h-score attraction">${{comentario:'💬',dm_inicial:'📩',dm_interes:'🎣',seguimiento:'🔁'}[item.tipo]}</div>
+      <div class="h-info">
+        <div class="h-name">${item.username ? '@'+item.username.replace('@','') : 'Prospecto'} ${item.nombre ? '· '+item.nombre : ''}</div>
+        <div class="h-time">${TIPO_CONFIG[item.tipo].label} · ${formatTime(item.timestamp)}</div>
+      </div>
+      <span class="h-status h-attraction">Guardado</span>
+    </div>`).join('');
+}
+
+async function testWebhookAttr() {
+  const url = document.getElementById('webhook-url').value.trim();
+  if (!url) { showToast('Configura el webhook en la pestaña Calificador'); return; }
+  try {
+    await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ test:true, tipo:'atraccion_20m', mensaje:'Prueba desde Generador Atracción', fecha:new Date().toISOString() })
+    });
+    showToast('✅ Webhook respondió correctamente');
+  } catch { showToast('⚠️ No se pudo conectar al webhook'); }
+}
+
+function setAttrLoading(on) {
+  document.getElementById('btn-attr').disabled = on;
+  document.getElementById('attr-spinner').style.display = on ? 'block' : 'none';
+  document.getElementById('attr-btn-text').textContent  = on ? 'Generando...' : '⚡ Generar mensaje de atracción';
+}
+
+function showAttrError(msg) { const b=document.getElementById('attr-error-box'); b.textContent=msg; b.style.display='block'; }
+function hideAttrError()    { document.getElementById('attr-error-box').style.display='none'; }
+
+// ── HELPERS COMPARTIDOS ───────────────────────────────────────
+function escHtml(t) {
+  return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function formatTime(date) {
+  return date.toLocaleTimeString('es-CO', { hour:'2-digit', minute:'2-digit' });
+}
+
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg;
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 3000);
+}
 </script>
 </body>
 </html>
